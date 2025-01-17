@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang=\"en\">
+<head>
+  <meta charset=\"UTF-8\" />
+  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />
+  <title>Plumber Builder UI</title>
+  <link rel=\"stylesheet\" href=\"style.css\" />
+</head>
+<body>
+  <div class=\"builder-container\">
+    <h1>Plumber Website Builder</h1>
+    <p>
+      This is a minimal interface to demonstrate how plumbers might pick templates,
+      edit text, and see a live preview. You can expand this as needed.
+    </p>
+    <div class=\"templates-section\">
+      <h2>Choose Your Template</h2>
+      <!-- Example: Show 2 template links just for demonstration -->
+      <ul>
+        <li>
+          <a href=\"#\" onclick=\"selectTemplate('template1')\">Template 1</a>
+        </li>
+        <li>
+          <a href=\"#\" onclick=\"selectTemplate('template2')\">Template 2</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class=\"editor-section\">
+      <h2>Business Info</h2>
+      <label>Name:
+        <input type=\"text\" id=\"businessName\" placeholder=\"Business Name\" />
+      </label>
+      <label>Phone:
+        <input type=\"text\" id=\"phone\" placeholder=\"(555) 123-4567\" />
+      </label>
+      <label>Email:
+        <input type=\"text\" id=\"email\" placeholder=\"[email protected]\" />
+      </label>
+      <label>About:
+        <textarea id=\"aboutUs\" placeholder=\"Short about section...\"></textarea>
+      </label>
+      <button onclick=\"updatePreview()\">Update Preview</button>
+    </div>
+
+    <div class=\"preview-section\">
+      <h2>Preview</h2>
+      <iframe id=\"templatePreview\" width=\"100%\" height=\"400\" src=\"about:blank\"></iframe>
+    </div>
+  </div>
+
+  <script src=\"script.js\"></script>
+</body>
+</html>
