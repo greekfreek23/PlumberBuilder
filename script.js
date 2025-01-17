@@ -1,34 +1,25 @@
 // script.js
-(function() {
-  let selectedTemplate = null;
+(function(){
+  const loadBtn = document.getElementById("loadPreviewBtn");
+  const previewFrame = document.getElementById("templatePreview");
+  const siteSlugInput = document.getElementById("siteSlug");
 
-  // Called when user clicks "Template 1" or "Template 2" link
-  window.selectTemplate = function(template) {
-    selectedTemplate = template;
-    // For demonstration, let's just load "template2" live preview:
-    // Real usage: could load an actual URL, e.g.
-    // "https://greekfreek23.github.io/ALPlumbersSite/template2/?site=fussell-plumbing"
-    document.getElementById('templatePreview').src =
-      "https://greekfreek23.github.io/ALPlumbersSite/" + template + "/?site=fussell-plumbing";
-  }
+  loadBtn.addEventListener("click", () => {
+    // 1) Which template is selected?
+    const templateValue = document.querySelector('input[name="templateChoice"]:checked').value;
 
-  // Called when user clicks "Update Preview"
-  window.updatePreview = function() {
-    const bn = document.getElementById('businessName').value;
-    const phone = document.getElementById('phone').value;
-    const email = document.getElementById('email').value;
-    const about = document.getElementById('aboutUs').value;
+    // 2) Site slug
+    const slug = siteSlugInput.value.trim() || "fussell-plumbing";  // default
 
-    // Example usage: you'd typically patch the JSON or use ChatGPT to rewrite text
-    // For now, we just log them
-    console.log("Pretend saving to finalWebsiteData.json...", { bn, phone, email, about });
-
-    // If you had a real backend, you'd do a fetch() to update the data
-    // Then reload the iframe. For demonstration only:
-    if (selectedTemplate) {
-      document.getElementById('templatePreview').contentWindow.location.reload();
-    } else {
-      alert("Please select a template first!");
+    // 3) Construct the full URL
+    let templateUrl = "";
+    if(templateValue === "template1") {
+      templateUrl = `https://greekfreek23.github.io/ALPlumbersSite/?site=${slug}`;
+    } else if(templateValue === "template2") {
+      templateUrl = `https://greekfreek23.github.io/ALPlumbersSite/template2/?site=${slug}`;
     }
-  }
+
+    // 4) Load into iframe
+    previewFrame.src = templateUrl;
+  });
 })();
