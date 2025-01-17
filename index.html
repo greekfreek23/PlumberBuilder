@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Plumber Site Builder (Basic Preview)</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>Plumber Site Builder (Auto-Load)</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="builder-container">
-    <h1>Plumber Site Builder (Preview Only)</h1>
-    <p>Choose a template, enter a plumber's slug (e.g. fussell-plumbing), and see a live preview.</p>
+    <h1>Plumber Site Builder</h1>
+    <p>
+      This interface allows you to choose a template and preview how your 
+      existing plumber data (via <code>?site=some-slug</code>) looks in that template.
+    </p>
 
     <div class="inputs-section">
       <h2>1) Select Template</h2>
@@ -21,7 +24,7 @@
         Template 2
       </label>
 
-      <h2>2) Enter Site Slug</h2>
+      <h2>2) Site Slug</h2>
       <input type="text" id="siteSlug" placeholder="fussell-plumbing" />
 
       <button id="loadPreviewBtn">Load Preview</button>
@@ -36,3 +39,4 @@
   <script src="script.js"></script>
 </body>
 </html>
+
