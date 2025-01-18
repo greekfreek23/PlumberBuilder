@@ -1,53 +1,116 @@
 /* style.css */
-body {
-  margin: 0;
+
+/* Basic Reset & Container */
+* {
+  margin: 0; 
   padding: 0;
-  font-family: Arial, sans-serif;
-  background: #f0f0f0;
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  background: #f3f7fa;
+  color: #333;
 }
 
-.builder-container {
-  max-width: 700px;
+.wizard-section {
+  display: none;
+  max-width: 800px;
   margin: 40px auto;
-  padding: 20px;
   background: #fff;
+  padding: 30px;
   border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
-
-h1 {
+.wizard-section.active {
+  display: block;
+}
+h1, h2, h3 {
+  margin-bottom: 15px;
+  color: #202020;
+}
+p {
+  line-height: 1.6;
   margin-bottom: 10px;
 }
-h2 {
-  margin-bottom: 8px;
-  margin-top: 20px;
-}
-label {
-  margin-right: 15px;
-}
-.inputs-section {
-  margin-bottom: 20px;
-}
-#siteSlug {
-  display: block;
-  margin-top: 10px;
-  padding: 6px;
-  width: 100%;
-  max-width: 300px;
-}
-button {
-  margin-top: 15px;
-  padding: 8px 16px;
+
+.primary-btn {
+  background: #0069d9;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
   cursor: pointer;
+  border-radius: 4px;
+  font-size: 16px;
+  margin-right: 10px;
+}
+.primary-btn:hover {
+  background: #005bb5;
 }
 
-.preview-section {
-  background: #fafafa;
-  border: 1px solid #ddd;
-  padding: 10px;
-  border-radius: 6px;
-}
-iframe {
+.secondary-btn {
+  background: #e2e6ea;
+  color: #333;
   border: none;
-  background: #eee;
-  margin-top: 10px;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+  margin-right: 10px;
+}
+.secondary-btn:hover {
+  background: #d6dade;
+}
+
+.rewrite-btn {
+  background: #28a745;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 4px;
+  margin-top: 5px;
+  cursor: pointer;
+  border: none;
+}
+.rewrite-btn:hover {
+  background: #218838;
+}
+
+.preview-image {
+  max-width: 250px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.step-block {
+  background: #f9f9f9;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 6px;
+  border: 1px solid #eee;
+}
+
+.radio-group {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+.hero-opts, .about-opts {
+  padding: 10px 0;
+  display: none;
+}
+.hero-opts.active, .about-opts.active {
+  display: block;
+}
+
+.step-nav {
+  text-align: right;
+  margin-top: 20px;
+}
+
+/* Landing Intro */
+.landing-intro {
+  text-align: center;
+}
+.landing-intro p {
+  margin: 15px 0 25px;
 }
