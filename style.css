@@ -1,3 +1,29 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+h1 {
+  margin-bottom: 1em;
+}
+
+#step1 {
+  margin-top: 20px;
+  border: 1px solid #ccc;
+  padding: 1em;
+  border-radius: 5px;
+}
+
+#currentLogoImage {
+  max-width: 200px;
+  margin: 10px 0;
+  display: block;
+}
+
+#newLogoUrl {
+  width: 300px;
+  margin: 5px 0;
+}
 
 
 
