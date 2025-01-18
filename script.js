@@ -199,7 +199,7 @@
       // Actually call Claude
       const claudeEndpoint = "https://api.anthropic.com/v1/complete";
       const payload = {
-        prompt: `Rewrite this hero text for a plumbing website:\\n\"${oldText}\"\\n\\nRewrite:`,
+        prompt: `Rewrite this hero text for a plumbing website:\n"${oldText}"\n\nRewrite:`,
         model: "claude-v1",
         max_tokens_to_sample: 150,
         temperature: 0.7
@@ -297,4 +297,5 @@
     });
   }
 })();
+
 
