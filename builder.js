@@ -15,7 +15,7 @@
 
   // 2) Fetch data from your "Live Site" repo (ALPlumbersSite)
   //    Points to finalWebsiteData.json on your GitHub
-  const DATA_URL = 'https://raw.githubusercontent.com/greekfreek23/ALPlumbersSite/main/finalWebsiteData.json';
+  const DATA_URL = 'https://raw.githubusercontent.com/greekfreek23/alabamaplumbersnowebsite/main/finalWebsiteData.json';
 
   fetch(DATA_URL)
     .then(response => {
