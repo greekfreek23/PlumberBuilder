@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Plumber Builder Wizard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Link your style.css -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- TOP PREVIEW AREA -->
+  <div class="preview-container" id="previewContainer">
+    <h1>Welcome to Your Plumber Template</h1>
+    <p>This is the preview of your existing site data. When you click "Edit," you'll see a multi-step wizard.</p>
+    <!-- iFrame that shows your single template -->
+    <iframe class="template-frame" id="templateFrame"></iframe>
+    <button class="primary-btn" id="editSiteBtn">Edit This Site</button>
+  </div>
+
+  <!-- WIZARD AREA (Hidden by default) -->
+  <div class="wizard-container" id="wizardContainer">
+    <!-- STEP 1 -->
+    <div class="wizard-step active" id="step1">
+      <h2>Step 1: Logo & Hero</h2>
+      <div class="step-block">
+        <h3>Logo</h3>
+        <img id="logoImg" alt="Current Logo" class="preview-image"/>
+        <div>
+          <button class="secondary-btn" id="keepLogoBtn">Keep Logo</button>
+          <button class="secondary-btn" id="uploadLogoBtn">Upload New Logo</button>
+          <button class="secondary-btn" id="generateLogoBtn">Generate Logo (DALL·E)</button>
+        </div>
+      </div>
+
+      <div class="step-block">
+        <h3>Hero Section</h3>
+        <label>
+          <input type="radio" name="heroOption" value="single" checked/>
+          Single Image
+        </label>
+        <label>
+          <input type="radio" name="heroOption" value="slider"/>
+          Slider (Multiple Images)
+        </label>
+
+        <div id="heroSingleDiv" class="hero-opts active">
+          <img id="heroSingleImg" class="preview-image" alt="Hero Single"/>
+          <p>Headline Text:</p>
+          <textarea id="heroHeadline"></textarea>
+          <button class="rewrite-btn" id="rewriteHeroBtn">Rewrite w/ Claude</button>
+        </div>
+
+        <div id="heroSliderDiv" class="hero-opts">
+          <p>Slider Images from old site:</p>
+          <div id="sliderImagesContainer"></div>
+          <button class="secondary-btn" id="addSliderImageBtn">Add Another Slide</button>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <button class="primary-btn" id="step1NextBtn">Next: About Us</button>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="wizard-step" id="step2">
+      <h2>Step 2: About Us</h2>
+      <div class="step-block">
+        <label>
+          <input type="radio" name="aboutImagesCount" value="1" checked/>
+          One Image
+        </label>
+        <label>
+          <input type="radio" name="aboutImagesCount" value="2"/>
+          Two Images
+        </label>
+
+        <div id="aboutSingleDiv" class="about-opts active">
+          <img id="aboutSingleImg" class="preview-image" alt="About Single"/>
+        </div>
+        <div id="aboutTwoDiv" class="about-opts">
+          <img id="aboutImg1" class="preview-image" alt="About1" />
+          <img id="aboutImg2" class="preview-image" alt="About2" />
+        </div>
+
+        <p>About Us Text:</p>
+        <textarea id="aboutText"></textarea>
+        <button class="rewrite-btn" id="rewriteAboutBtn">Rewrite w/ Claude</button>
+      </div>
+
+      <div class="step-nav">
+        <button class="primary-btn" id="finishBtn">Finish</button>
+      </div>
+    </div>
+
+    <!-- STEP FINISHED -->
+    <div class="wizard-step" id="finishedStep">
+      <h2>All Done!</h2>
+      <p>You can publish your changes or go back to preview. (Not fully implemented here.)</p>
+      <button class="primary-btn" id="publishBtn">Publish</button>
+      <button class="secondary-btn" id="backToPreviewBtn">Back to Preview</button>
+    </div>
+  </div>
+
+  <!-- Link to your JS -->
+  <script src="script.js"></script>
+</body>
+</html>
