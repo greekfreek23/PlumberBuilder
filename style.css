@@ -1,13 +1,13 @@
 /* style.css */
 
-/* RESETS & BASE */
+/* RESET & BASE */
 * {
-  margin: 0;
+  margin: 0; 
   padding: 0;
   box-sizing: border-box;
 }
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, sans-serif;
+  font-family: "Helvetica Neue", Arial, sans-serif;
   background: linear-gradient(to bottom right, #e3f2fd, #f0f4f8);
   color: #333;
 }
@@ -23,7 +23,7 @@ body {
 }
 .preview-container h1 {
   font-size: 1.8em;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 .preview-container p {
   line-height: 1.6;
@@ -117,15 +117,22 @@ body {
   display: inline-block;
   margin-bottom: 8px;
 }
-.hero-opts,
-.about-opts {
+.hero-opts {
   display: none;
   margin-top: 10px;
 }
-.hero-opts.active,
+.hero-opts.active {
+  display: block;
+}
+
+/* step2 or final placeholders */
+.about-opts {
+  display: none;
+}
 .about-opts.active {
   display: block;
 }
+
 textarea {
   width: 100%;
   min-height: 60px;
@@ -136,6 +143,7 @@ textarea {
   font-family: inherit;
 }
 
+/* Buttons */
 .secondary-btn {
   background: #e0e0e0;
   color: #333;
