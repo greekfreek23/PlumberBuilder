@@ -1,62 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Improved Plumber Builder Wizard</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Link to style.css -->
+  <meta charset="UTF-8" />
+  <title>Plumber Builder Wizard (File Upload + DALL·E)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <!-- PREVIEW CONTAINER -->
   <div class="preview-container" id="previewContainer">
     <h1>Welcome to Your Plumber Template</h1>
-    <p>This is the preview of your existing site data. Click "Edit" to open a wizard.</p>
+    <p>This is the preview of your existing site data. Click "Edit" to open a multi-step wizard.</p>
     <iframe class="template-frame" id="templateFrame"></iframe>
     <button class="primary-btn" id="editSiteBtn">Edit This Site</button>
   </div>
 
   <!-- WIZARD CONTAINER -->
   <div class="wizard-container" id="wizardContainer">
-    <!-- STEP INDICATOR BAR -->
+    <!-- STEP BAR -->
     <div class="step-bar">
       <div class="step-item active" id="barStep1">Step 1</div>
       <div class="step-item" id="barStep2">Step 2</div>
       <div class="step-item" id="barFinish">Finish</div>
     </div>
 
-    <!-- STEP 1: LOGO & HERO -->
+    <!-- STEP 1 -->
     <div class="wizard-step active" id="step1">
       <h2>Step 1: Logo & Hero</h2>
 
       <div class="step-block">
         <h3>Logo</h3>
-        <img id="logoImg" alt="Current Logo" class="preview-image"/>
+        <img id="logoImg" alt="Current Logo" class="preview-image" />
         <div class="button-row">
           <button class="secondary-btn" id="keepLogoBtn">Keep Logo</button>
           <button class="secondary-btn" id="uploadLogoBtn">Upload Logo</button>
           <button class="secondary-btn" id="generateLogoBtn">Generate (DALL·E)</button>
         </div>
+        <!-- Hidden file input for uploading logo -->
+        <input type="file" accept="image/*" id="logoFileInput" style="display:none;" />
       </div>
 
       <div class="step-block">
         <h3>Hero Section</h3>
         <label class="radio-inline">
-          <input type="radio" name="heroType" value="single" checked/> Single Image
+          <input type="radio" name="heroType" value="single" checked />
+          Single Image
         </label>
         <label class="radio-inline">
-          <input type="radio" name="heroType" value="slider"/> Slider (Multiple Images)
+          <input type="radio" name="heroType" value="slider" />
+          Slider (Multiple Images)
         </label>
 
         <div id="heroSingleDiv" class="hero-opts active">
           <img id="heroSingleImg" alt="HeroSingle" class="preview-image"/>
+          <div class="button-row">
+            <button class="secondary-btn" id="uploadHeroSingleBtn">Upload Hero</button>
+            <button class="secondary-btn" id="generateHeroSingleBtn">Generate (DALL·E)</button>
+            <input type="file" accept="image/*" id="heroSingleFileInput" style="display:none;" />
+          </div>
           <p>Headline Text:</p>
           <textarea id="heroHeadline"></textarea>
           <button class="rewrite-btn" id="rewriteHeroBtn">Rewrite w/ Claude</button>
         </div>
 
         <div id="heroSliderDiv" class="hero-opts">
-          <p>Slider Images (from your old site or new ones):</p>
+          <p>Slider Images:</p>
           <div id="sliderImagesContainer"></div>
           <button class="secondary-btn" id="addSliderImageBtn">Add Another Slide</button>
         </div>
@@ -67,25 +75,40 @@
       </div>
     </div>
 
-    <!-- STEP 2: ABOUT US -->
+    <!-- STEP 2 -->
     <div class="wizard-step" id="step2">
       <h2>Step 2: About Us</h2>
 
       <div class="step-block">
         <label class="radio-inline">
-          <input type="radio" name="aboutImagesCount" value="1" checked/> One Image
+          <input type="radio" name="aboutImagesCount" value="1" checked />
+          One Image
         </label>
         <label class="radio-inline">
-          <input type="radio" name="aboutImagesCount" value="2"/> Two Images
+          <input type="radio" name="aboutImagesCount" value="2" />
+          Two Images
         </label>
 
         <div id="aboutSingleDiv" class="about-opts active">
-          <img id="aboutSingleImg" alt="AboutSingle" class="preview-image"/>
+          <img id="aboutSingleImg" alt="AboutSingle" class="preview-image" />
+          <div class="button-row">
+            <button class="secondary-btn" id="uploadAboutSingleBtn">Upload About Img</button>
+            <button class="secondary-btn" id="generateAboutSingleBtn">Generate (DALL·E)</button>
+            <input type="file" accept="image/*" id="aboutSingleFileInput" style="display:none;" />
+          </div>
         </div>
+
         <div id="aboutTwoDiv" class="about-opts">
           <div class="about-two-images">
-            <img id="aboutImg1" alt="About1" class="preview-image"/>
-            <img id="aboutImg2" alt="About2" class="preview-image"/>
+            <img id="aboutImg1" alt="About1" class="preview-image" />
+            <button class="secondary-btn" id="uploadAboutImg1Btn">Upload #1</button>
+            <button class="secondary-btn" id="generateAboutImg1Btn">Generate #1</button>
+            <input type="file" accept="image/*" id="aboutImg1FileInput" style="display:none;" />
+
+            <img id="aboutImg2" alt="About2" class="preview-image" />
+            <button class="secondary-btn" id="uploadAboutImg2Btn">Upload #2</button>
+            <button class="secondary-btn" id="generateAboutImg2Btn">Generate #2</button>
+            <input type="file" accept="image/*" id="aboutImg2FileInput" style="display:none;" />
           </div>
         </div>
 
@@ -95,6 +118,7 @@
       </div>
 
       <div class="step-nav">
+        <button class="secondary-btn" id="step2PrevBtn">Previous</button>
         <button class="primary-btn" id="finishBtn">Finish</button>
       </div>
     </div>
@@ -102,7 +126,8 @@
     <!-- FINISHED STEP -->
     <div class="wizard-step" id="finishedStep">
       <h2>All Done!</h2>
-      <p>We have your updated info (logo, hero, about). You can either publish or go back to the preview.</p>
+      <p>You can publish your changes or go back to preview. 
+         This code only shows local previews for uploads!</p>
       <button class="primary-btn" id="publishBtn">Publish (Test)</button>
       <button class="secondary-btn" id="backToPreviewBtn">Back to Preview</button>
     </div>
