@@ -18,47 +18,51 @@
   const step2            = document.getElementById("step2");
   const finishedStep     = document.getElementById("finishedStep");
 
-  // Step1 elements
-  const step1NextBtn     = document.getElementById("step1NextBtn");
-  const logoImg          = document.getElementById("logoImg");
+  // STEP1: LOGO
   const keepLogoBtn      = document.getElementById("keepLogoBtn");
   const uploadLogoBtn    = document.getElementById("uploadLogoBtn");
   const logoFileInput    = document.getElementById("logoFileInput");
+  const logoImg          = document.getElementById("logoImg");
 
-  // Hero single vs multiple
+  // STEP1: HERO
+  const step1NextBtn     = document.getElementById("step1NextBtn");
+  const heroModeRadios   = document.getElementsByName("heroMode");
   const heroSingleDiv    = document.getElementById("heroSingleDiv");
   const heroMultipleDiv  = document.getElementById("heroMultipleDiv");
+
   const singleHeroChoices= document.getElementById("singleHeroChoices");
-  const heroSingleImg    = document.getElementById("heroSingleImg");
-  const heroHeadline     = document.getElementById("heroHeadline");
+  const uploadSingleHeroBtn = document.getElementById("uploadSingleHeroBtn");
+  const heroSingleFileInput = document.getElementById("heroSingleFileInput");
+  const singleHeroHeadline  = document.getElementById("singleHeroHeadline");
+  const rewriteSingleHeroBtn= document.getElementById("rewriteSingleHeroBtn");
 
-  const uploadSingleHeroBtn  = document.getElementById("uploadSingleHeroBtn");
-  const heroSingleFileInput  = document.getElementById("heroSingleFileInput");
+  const multiHeroContainer= document.getElementById("multiHeroContainer");
+  const addMoreMultiHeroBtn= document.getElementById("addMoreMultiHeroBtn");
+  const multiHeroFileInput = document.getElementById("multiHeroFileInput");
+  const multiHeroHeadline  = document.getElementById("multiHeroHeadline");
+  const rewriteMultiHeroBtn= document.getElementById("rewriteMultiHeroBtn");
 
-  const rewriteHeroBtn   = document.getElementById("rewriteHeroBtn");
-
-  const addSliderImageBtn= document.getElementById("addSliderImageBtn");
-  const multiHeroFileInput  = document.getElementById("multiHeroFileInput");
-  const heroMultipleDiv  = document.getElementById("heroMultipleDiv");
-  const sliderImagesContainer= document.getElementById("sliderImagesContainer");
-
-  // Step2
+  // STEP2
   const step2PrevBtn     = document.getElementById("step2PrevBtn");
   const finishBtn        = document.getElementById("finishBtn");
 
-  // Finished
+  // FINISHED
   const publishBtn       = document.getElementById("publishBtn");
   const backToPreviewBtn = document.getElementById("backToPreviewBtn");
 
-  // On load, parse ?site= param, fetch data
-  window.addEventListener("DOMContentLoaded", async() => {
+  // Local arrays for hero images if multiple
+  let multipleHeroImages = [];
+
+  // On load, parse ?site=, fetch data
+  window.addEventListener("DOMContentLoaded", initBuilder);
+
+  async function initBuilder(){
     const params = new URLSearchParams(window.location.search);
     const slug = params.get("site");
-    if(!slug) {
-      alert("No ?site= param found. Can't load data!");
+    if(!slug){
+      alert("No ?site= param. Can't load data!");
       return;
     }
-
     try {
       const resp = await fetch("https://raw.githubusercontent.com/greekfreek23/alabamaplumbersnowebsite/main/finalWebsiteData.json");
       if(!resp.ok) throw new Error("Failed to fetch finalWebsiteData.json");
@@ -66,19 +70,19 @@
       const arr  = json.finalWebsiteData || [];
       plumberData = arr.find(b => (b.siteId||"").toLowerCase() === slug.toLowerCase());
       if(!plumberData) {
-        console.warn("No matching site data. Using fallback empty object.");
+        console.warn("No site data matched, fallback to empty.");
         plumberData = {};
       }
-      // Put the template in the iFrame
+      // Put the old site in the iframe
       const templateURL = `https://greekfreek23.github.io/ALPlumbersSite/?site=${slug}`;
       templateFrame.src = templateURL;
-    } catch(err) {
-      console.error("Error fetching plumber data:", err);
+    } catch(err){
+      console.error("Fetch plumber data error:", err);
       plumberData = {};
     }
-  });
+  }
 
-  // "Edit This Site"
+  // "Edit This Site" -> show wizard
   editSiteBtn.addEventListener("click", () => {
     previewContainer.style.display = "none";
     wizardContainer.style.display  = "block";
@@ -98,133 +102,181 @@
     // LOGO
     logoImg.src = plumberData.logo || "https://via.placeholder.com/150";
 
-    // Hero single vs. multiple
-    // We'll load the "three original images" from plumberData.photos?.heroImages
-    // Example: plumberData.photos?.heroImages = [{imageUrl: '...'}, {imageUrl: '...'}, {imageUrl: '...'}]
+    // Hero images
     const heroArr = plumberData.photos?.heroImages || [];
-    // Single hero
-    // We'll create radio buttons for each of the three images
+    // Single
     singleHeroChoices.innerHTML = "";
-    if(heroArr.length>0){
-      heroArr.forEach((imgObj, idx) => {
-        const radio = document.createElement("input");
-        radio.type = "radio";
-        radio.name = "singleHeroChoice";
-        radio.value = imgObj.imageUrl;
-        if(idx===0) radio.checked = true; // pick the first by default
+    heroArr.forEach((imgObj, idx) => {
+      // create a radio to pick this old image
+      const radio = document.createElement("input");
+      radio.type = "radio";
+      radio.name = "singleHeroPick";
+      radio.value = imgObj.imageUrl;
+      if(idx===0) radio.checked = true;
 
-        const label = document.createElement("label");
-        label.style.marginRight = "15px";
-        label.textContent = `Original Hero #${idx+1}`;
-
-        // when user picks this radio, update the preview
-        radio.addEventListener("change", () => {
-          heroSingleImg.src = imgObj.imageUrl;
-        });
-
-        singleHeroChoices.appendChild(radio);
-        singleHeroChoices.appendChild(label);
+      radio.addEventListener("change", () => {
+        // set the single hero preview
+        // also update singleHeroHeadline if you want to reflect its callToAction
+        document.getElementById("heroSingleImg").src = imgObj.imageUrl;
+        singleHeroHeadline.value = imgObj.callToAction || "Enter your hero text...";
       });
-    } else {
-      // no original images
-      singleHeroChoices.textContent = "No original hero images found. Please upload or select multiple.";
-    }
+      const label = document.createElement("label");
+      label.style.marginRight = "10px";
+      label.textContent = `Old Hero #${idx+1}`;
 
-    heroSingleImg.src = (heroArr[0]?.imageUrl) || "https://via.placeholder.com/600x300";
-    heroHeadline.value = heroArr[0]?.callToAction || "Your default hero text...";
+      singleHeroChoices.appendChild(radio);
+      singleHeroChoices.appendChild(label);
+    });
+    // If there's at least one hero, use the first as default
+    if(heroArr[0]){
+      heroSingleImg.src = heroArr[0].imageUrl;
+      singleHeroHeadline.value = heroArr[0].callToAction || "";
+    } else {
+      heroSingleImg.src = "https://via.placeholder.com/600x300";
+      singleHeroHeadline.value = "";
+    }
 
     // multiple
-    sliderImagesContainer.innerHTML = "";
-    if(heroArr.length>0){
-      heroArr.forEach((imgObj, idx) => {
-        addMultiHeroRow(imgObj.imageUrl, idx);
-      });
-    }
+    multipleHeroImages = heroArr.map(x => x.imageUrl); // keep an array of strings
+    renderMultipleHeroImages();
+
+    // If plumberData has a global heroHeadline
+    multiHeroHeadline.value = plumberData.heroHeadline || "Our best plumbing solutions!";
   }
 
-  // keep existing logo
+  // Keep existing logo
   keepLogoBtn.addEventListener("click", () => {
-    alert("We’ll keep the existing logo. No changes.");
+    alert("Keeping old logo, no changes!");
   });
 
-  // upload new logo
+  // Upload new logo
   uploadLogoBtn.addEventListener("click", () => {
     logoFileInput.click();
   });
-  logoFileInput.addEventListener("change", (ev) => {
+  logoFileInput.addEventListener("change", ev => {
     if(ev.target.files.length>0){
       const file = ev.target.files[0];
       const reader = new FileReader();
-      reader.onload = (e) => {
-        logoImg.src = e.target.result;
+      reader.onload = e => {
+        logoImg.src = e.target.result; // show the newly uploaded
       };
       reader.readAsDataURL(file);
     }
   });
 
-  // Single hero upload
+  // hero single or multiple choice
+  document.querySelectorAll('input[name="heroMode"]').forEach(r => {
+    r.addEventListener("change", () => {
+      if(r.value==="single"){
+        heroSingleDiv.classList.add("active");
+        heroMultipleDiv.classList.remove("active");
+      } else {
+        heroSingleDiv.classList.remove("active");
+        heroMultipleDiv.classList.add("active");
+      }
+    });
+  });
+
+  // Upload single hero
   uploadSingleHeroBtn.addEventListener("click", () => {
     heroSingleFileInput.click();
   });
-  heroSingleFileInput.addEventListener("change", (ev) => {
+  heroSingleFileInput.addEventListener("change", ev => {
     if(ev.target.files.length>0){
       const file = ev.target.files[0];
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = e => {
         heroSingleImg.src = e.target.result;
       };
       reader.readAsDataURL(file);
     }
   });
 
-  // multiple hero upload
-  addSliderImageBtn.addEventListener("click", () => {
+  // multiple hero
+  addMoreMultiHeroBtn.addEventListener("click", () => {
     multiHeroFileInput.click();
   });
-  multiHeroFileInput.addEventListener("change", (ev) => {
+  multiHeroFileInput.addEventListener("change", ev => {
     if(ev.target.files.length>0){
       const file = ev.target.files[0];
       const reader = new FileReader();
-      reader.onload = (e) => {
-        addMultiHeroRow(e.target.result, Date.now()); // use dataURL as src
+      reader.onload = e => {
+        multipleHeroImages.push(e.target.result);
+        renderMultipleHeroImages();
       };
       reader.readAsDataURL(file);
     }
   });
 
-  // rewriting hero text with Claude
-  rewriteHeroBtn.addEventListener("click", async() => {
-    const oldText = heroHeadline.value;
-    try {
-      // Actually call Claude
-      const claudeEndpoint = "https://api.anthropic.com/v1/complete";
-      const payload = {
-        prompt: `Rewrite this hero text for a plumbing website:\n"${oldText}"\n\nRewrite:`,
-        model: "claude-v1",
-        max_tokens_to_sample: 150,
-        temperature: 0.7
-      };
-      const resp = await fetch(claudeEndpoint, {
-        method: "POST",
-        headers: {
-          "x-api-key": "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",
-          "content-type": "application/json"
-        },
-        body: JSON.stringify(payload)
+  function renderMultipleHeroImages(){
+    multiHeroContainer.innerHTML = "";
+    multipleHeroImages.forEach((url, idx) => {
+      const row = document.createElement("div");
+      row.style.marginBottom = "10px";
+      row.innerHTML = `
+        <img src="${url}" class="preview-image" style="margin-right:8px;">
+        <button class="secondary-btn removeMultiBtn">Remove</button>
+      `;
+      multiHeroContainer.appendChild(row);
+
+      const removeBtn = row.querySelector(".removeMultiBtn");
+      removeBtn.addEventListener("click", () => {
+        multipleHeroImages.splice(idx,1);
+        renderMultipleHeroImages();
       });
-      if(!resp.ok) throw new Error("Claude rewrite request failed");
-      const data = await resp.json();
-      // The response structure from Anthropic typically has data.completion or data.completions
-      const newText = data.completion || "[Claude returned no text, check model!]";
-      heroHeadline.value = newText.trim();
-      alert("Hero text rewritten by Claude!");
+    });
+  }
+
+  // rewrite single hero text with Claude
+  rewriteSingleHeroBtn.addEventListener("click", async() => {
+    const oldText = singleHeroHeadline.value || "Your hero text here...";
+    try {
+      const newText = await rewriteWithClaude(oldText);
+      singleHeroHeadline.value = newText.trim();
+      alert("Single hero text updated via Claude!");
     } catch(err){
-      console.error("Claude rewrite error:", err);
-      alert("Rewrite with Claude failed. Check console/logs.");
+      console.error("Rewrite single hero error:", err);
+      alert("Rewrite single hero failed. Check console.");
     }
   });
 
-  // step1 next -> step2
+  // rewrite multiple hero text with Claude
+  rewriteMultiHeroBtn.addEventListener("click", async() => {
+    const oldText = multiHeroHeadline.value || "Global multi hero text...";
+    try {
+      const newText = await rewriteWithClaude(oldText);
+      multiHeroHeadline.value = newText.trim();
+      alert("Multi hero text updated via Claude!");
+    } catch(err){
+      console.error("Rewrite multi hero error:", err);
+      alert("Rewrite multi hero text failed. Check console.");
+    }
+  });
+
+  async function rewriteWithClaude(oldText){
+    // Real call to Claude
+    const claudeUrl = "https://api.anthropic.com/v1/complete";
+    const prompt = `Rewrite this hero text for a plumbing site: "${oldText}"\nRewrite:`;
+    const resp = await fetch(claudeUrl, {
+      method: "POST",
+      headers: {
+        "x-api-key": "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",
+        "content-type": "application/json"
+      },
+      body: JSON.stringify({
+        model: "claude-v1",
+        prompt,
+        max_tokens_to_sample: 150,
+        temperature: 0.7
+      })
+    });
+    if(!resp.ok) throw new Error("Claude rewriting request failed");
+    const data = await resp.json();
+    // typically data.completion
+    return data.completion || oldText;
+  }
+
+  // step1Next -> step2
   step1NextBtn.addEventListener("click", () => {
     step1.classList.remove("active");
     step2.classList.add("active");
@@ -234,7 +286,7 @@
     barFinish.classList.remove("active");
   });
 
-  // Step2 prev -> Step1
+  // step2Prev -> step1
   step2PrevBtn.addEventListener("click", () => {
     step2.classList.remove("active");
     step1.classList.add("active");
@@ -243,7 +295,7 @@
     barStep1.classList.add("active");
   });
 
-  // Step2 -> finish
+  // step2 -> finish
   finishBtn.addEventListener("click", () => {
     step2.classList.remove("active");
     finishedStep.classList.add("active");
@@ -252,9 +304,9 @@
     barFinish.classList.add("active");
   });
 
-  // Finish step
+  // final step
   publishBtn.addEventListener("click", () => {
-    alert("Publish not implemented. You'd push data to a backend or GitHub here.");
+    alert("Publish not implemented. You'd store final data or push to GitHub here.");
   });
   backToPreviewBtn.addEventListener("click", () => {
     wizardContainer.style.display = "none";
@@ -267,35 +319,6 @@
     barStep2.classList.remove("active");
     barFinish.classList.remove("active");
   });
-
-  // Radio toggles for hero single vs multiple
-  document.querySelectorAll('input[name="heroChoice"]').forEach(radio => {
-    radio.addEventListener("change", () => {
-      if(radio.value === "single"){
-        heroSingleDiv.classList.add("active");
-        heroMultipleDiv.classList.remove("active");
-      } else {
-        heroSingleDiv.classList.remove("active");
-        heroMultipleDiv.classList.add("active");
-      }
-    });
-  });
-
-  // helper to add multiple hero row
-  function addMultiHeroRow(src, idx){
-    const wrap = document.createElement("div");
-    wrap.style.marginBottom = "8px";
-    wrap.innerHTML = `
-      <img src="${src}" class="preview-image" style="margin-right:10px;">
-      <button class="secondary-btn removeMultiBtn">Remove</button>
-    `;
-    sliderImagesContainer.appendChild(wrap);
-
-    const removeBtn = wrap.querySelector(".removeMultiBtn");
-    removeBtn.addEventListener("click", () => {
-      sliderImagesContainer.removeChild(wrap);
-    });
-  }
 })();
 
 
