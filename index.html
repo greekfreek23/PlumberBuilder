@@ -2,41 +2,123 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Plumber Site Builder (Auto-Load)</title>
+  <title>Plumber Site Builder Wizard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="builder-container">
-    <h1>Plumber Site Builder</h1>
-    <p>
-      This interface allows you to choose a template and preview how your 
-      existing plumber data (via <code>?site=some-slug</code>) looks in that template.
-    </p>
+  <!-- LANDING / PREVIEW -->
+  <div class="wizard-section active" id="landingSection">
+    <div class="landing-intro">
+      <h1>Plumber Template Preview</h1>
+      <p>
+        Welcome to our professional plumber template. Here you can update your logo, 
+        hero images, about us, and more. 
+      </p>
+      <button class="primary-btn" id="startBuilderBtn">Edit This Site</button>
+    </div>
+  </div>
 
-    <div class="inputs-section">
-      <h2>1) Select Template</h2>
-      <label>
-        <input type="radio" name="templateChoice" value="template1" checked>
-        Template 1
-      </label>
-      <label>
-        <input type="radio" name="templateChoice" value="template2">
-        Template 2
-      </label>
-
-      <h2>2) Site Slug</h2>
-      <input type="text" id="siteSlug" placeholder="fussell-plumbing" />
-
-      <button id="loadPreviewBtn">Load Preview</button>
+  <!-- STEP 1: LOGO & HERO -->
+  <div class="wizard-section" id="step1Section">
+    <h2>Step 1: Logo & Hero Section</h2>
+    <div class="step-block">
+      <h3>Logo</h3>
+      <img id="currentLogoImg" src="" alt="Current Logo" class="preview-image" />
+      <div class="logo-options">
+        <button class="secondary-btn" id="keepLogoBtn">Keep Existing Logo</button>
+        <button class="secondary-btn" id="uploadLogoBtn">Upload New Logo</button>
+        <button class="secondary-btn" id="generateLogoBtn">Generate Logo (DALL·E)</button>
+      </div>
+      <input type="file" accept="image/*" id="logoFileInput" style="display:none;" />
     </div>
 
-    <div class="preview-section">
-      <h2>3) Preview</h2>
-      <iframe id="templatePreview" width="100%" height="500" src="about:blank"></iframe>
+    <div class="step-block">
+      <h3>Hero Section</h3>
+      <label class="radio-group">
+        <input type="radio" name="heroOption" value="single" checked>Single Image
+      </label>
+      <label class="radio-group">
+        <input type="radio" name="heroOption" value="slider">Slider (Multiple Images)
+      </label>
+      
+      <!-- SINGLE HERO -->
+      <div class="hero-single-opts hero-opts active" id="heroSingleDiv">
+        <img id="heroSingleImg" src="" class="preview-image" alt="Hero Single" />
+        <div>
+          <button class="secondary-btn" id="uploadSingleHeroBtn">Upload/Replace</button>
+          <button class="secondary-btn" id="generateSingleHeroBtn">Generate w/ DALL·E</button>
+          <input type="file" accept="image/*" id="singleHeroFile" style="display:none;" />
+        </div>
+        <label>Hero Text / Headline:</label>
+        <textarea id="heroHeadline"></textarea>
+        <button class="rewrite-btn" id="rewriteHeroBtn">Rewrite with Claude</button>
+      </div>
+
+      <!-- SLIDER HERO -->
+      <div class="hero-slider-opts hero-opts" id="heroSliderDiv">
+        <p>We found multiple hero images for you:</p>
+        <div id="sliderImagesContainer"></div>
+        <button class="secondary-btn" id="addSliderImageBtn">Add Another Slide</button>
+      </div>
     </div>
+
+    <div class="step-nav">
+      <button class="primary-btn" id="step1NextBtn">Next: About Us</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: ABOUT US -->
+  <div class="wizard-section" id="step2Section">
+    <h2>Step 2: About Us</h2>
+    <div class="step-block">
+      <label class="radio-group">
+        <input type="radio" name="aboutImageCount" value="1" checked>One Image
+      </label>
+      <label class="radio-group">
+        <input type="radio" name="aboutImageCount" value="2">Two Images
+      </label>
+      <!-- Single About -->
+      <div id="aboutSingleDiv" class="about-opts active">
+        <img id="aboutSingleImg" src="" class="preview-image" alt="About Single" />
+        <div>
+          <button class="secondary-btn" id="uploadAboutSingleBtn">Upload/Replace</button>
+          <button class="secondary-btn" id="generateAboutSingleBtn">Generate w/ DALL·E</button>
+          <input type="file" accept="image/*" id="aboutSingleFile" style="display:none;" />
+        </div>
+      </div>
+      <!-- Two About -->
+      <div id="aboutTwoDiv" class="about-opts">
+        <div class="about-two-images">
+          <img id="aboutImg1" src="" class="preview-image" alt="About1" />
+          <button class="secondary-btn" id="uploadAboutImg1Btn">Upload/Replace</button>
+          <button class="secondary-btn" id="generateAboutImg1Btn">Generate w/ DALL·E</button>
+
+          <img id="aboutImg2" src="" class="preview-image" alt="About2" />
+          <button class="secondary-btn" id="uploadAboutImg2Btn">Upload/Replace</button>
+          <button class="secondary-btn" id="generateAboutImg2Btn">Generate w/ DALL·E</button>
+        </div>
+      </div>
+
+      <div>
+        <label>About Us Text:</label>
+        <textarea id="aboutUsText"></textarea>
+        <button class="rewrite-btn" id="rewriteAboutBtn">Rewrite with Claude</button>
+      </div>
+    </div>
+
+    <div class="step-nav">
+      <button class="primary-btn" id="step2NextBtn">Finish / Next Steps</button>
+    </div>
+  </div>
+
+  <!-- FINAL SCREEN -->
+  <div class="wizard-section" id="finalSection">
+    <h2>All Set!</h2>
+    <p>Your logo, hero, and about us are updated. You can proceed to add more sections (like Services, Reviews, etc.), or publish now.</p>
+    <button class="primary-btn" id="publishBtn">Publish</button>
   </div>
 
   <script src="script.js"></script>
 </body>
 </html>
-
