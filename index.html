@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Plumber Builder Wizard (Test)</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <title>Improved Plumber Builder Wizard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Link to style.css -->
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- PREVIEW CONTAINER -->
   <div class="preview-container" id="previewContainer">
     <h1>Welcome to Your Plumber Template</h1>
     <p>This is the preview of your existing site data. Click "Edit" to open a wizard.</p>
@@ -14,39 +16,93 @@
     <button class="primary-btn" id="editSiteBtn">Edit This Site</button>
   </div>
 
+  <!-- WIZARD CONTAINER -->
   <div class="wizard-container" id="wizardContainer">
-    <!-- STEP 1 -->
+    <!-- STEP INDICATOR BAR -->
+    <div class="step-bar">
+      <div class="step-item active" id="barStep1">Step 1</div>
+      <div class="step-item" id="barStep2">Step 2</div>
+      <div class="step-item" id="barFinish">Finish</div>
+    </div>
+
+    <!-- STEP 1: LOGO & HERO -->
     <div class="wizard-step active" id="step1">
       <h2>Step 1: Logo & Hero</h2>
+
       <div class="step-block">
         <h3>Logo</h3>
-        <img id="logoImg" alt="Logo" class="preview-image"/>
+        <img id="logoImg" alt="Current Logo" class="preview-image"/>
+        <div class="button-row">
+          <button class="secondary-btn" id="keepLogoBtn">Keep Logo</button>
+          <button class="secondary-btn" id="uploadLogoBtn">Upload Logo</button>
+          <button class="secondary-btn" id="generateLogoBtn">Generate (DALL·E)</button>
+        </div>
       </div>
+
       <div class="step-block">
-        <h3>Hero (Single or Slider) [Test Setup]</h3>
-        <img id="heroSingleImg" alt="HeroSingle" class="preview-image"/>
+        <h3>Hero Section</h3>
+        <label class="radio-inline">
+          <input type="radio" name="heroType" value="single" checked/> Single Image
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="heroType" value="slider"/> Slider (Multiple Images)
+        </label>
+
+        <div id="heroSingleDiv" class="hero-opts active">
+          <img id="heroSingleImg" alt="HeroSingle" class="preview-image"/>
+          <p>Headline Text:</p>
+          <textarea id="heroHeadline"></textarea>
+          <button class="rewrite-btn" id="rewriteHeroBtn">Rewrite w/ Claude</button>
+        </div>
+
+        <div id="heroSliderDiv" class="hero-opts">
+          <p>Slider Images (from your old site or new ones):</p>
+          <div id="sliderImagesContainer"></div>
+          <button class="secondary-btn" id="addSliderImageBtn">Add Another Slide</button>
+        </div>
       </div>
+
       <div class="step-nav">
-        <button class="primary-btn" id="step1NextBtn">Next: About</button>
+        <button class="primary-btn" id="step1NextBtn">Next: About Us</button>
       </div>
     </div>
 
-    <!-- STEP 2 -->
+    <!-- STEP 2: ABOUT US -->
     <div class="wizard-step" id="step2">
       <h2>Step 2: About Us</h2>
+
       <div class="step-block">
-        <img id="aboutSingleImg" alt="AboutSingle" class="preview-image"/>
+        <label class="radio-inline">
+          <input type="radio" name="aboutImagesCount" value="1" checked/> One Image
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="aboutImagesCount" value="2"/> Two Images
+        </label>
+
+        <div id="aboutSingleDiv" class="about-opts active">
+          <img id="aboutSingleImg" alt="AboutSingle" class="preview-image"/>
+        </div>
+        <div id="aboutTwoDiv" class="about-opts">
+          <div class="about-two-images">
+            <img id="aboutImg1" alt="About1" class="preview-image"/>
+            <img id="aboutImg2" alt="About2" class="preview-image"/>
+          </div>
+        </div>
+
+        <p>About Us Text:</p>
         <textarea id="aboutText"></textarea>
+        <button class="rewrite-btn" id="rewriteAboutBtn">Rewrite w/ Claude</button>
       </div>
+
       <div class="step-nav">
         <button class="primary-btn" id="finishBtn">Finish</button>
       </div>
     </div>
 
-    <!-- FINISHED -->
+    <!-- FINISHED STEP -->
     <div class="wizard-step" id="finishedStep">
-      <h2>All Done</h2>
-      <p>Press "Back" to see the preview again or "Publish" to do final steps.</p>
+      <h2>All Done!</h2>
+      <p>We have your updated info (logo, hero, about). You can either publish or go back to the preview.</p>
       <button class="primary-btn" id="publishBtn">Publish (Test)</button>
       <button class="secondary-btn" id="backToPreviewBtn">Back to Preview</button>
     </div>
@@ -55,4 +111,5 @@
   <script src="script.js"></script>
 </body>
 </html>
+
 
